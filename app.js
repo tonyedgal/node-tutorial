@@ -3,25 +3,40 @@ const express = require("express");
 // express app
 const app = express();
 
+//register view engine
+app.set("view engine", "ejs");
+app.set("views", "pages"); // specify the folder name. default is views
+
 // listen for requests
 app.listen(3000);
 
 //choose the request you want to listen for
 app.get("/", (req, res) => {
-  //   res.send("<h1>meeee</h1>");
-  res.sendFile("./pages/index.html", { root: __dirname });
+  const blogs = [
+    {
+      title: "June is pretty",
+      snippet: "Lorem ipsum, dolor sit amet consectetur",
+    },
+    {
+      title: "Gabby is pretty",
+      snippet: "Lorem ipsum, dolor sit amet consectetur",
+    },
+    {
+      title: "Amaebi is pretty",
+      snippet: "Lorem ipsum, dolor sit amet consectetur",
+    },
+  ];
+  res.render("index", { title: "Home", blogs }); // pass the dynamic data as an object to the ejs file. Use blogs instead of {blogs: blogs}, since they're both the same name.
 });
 app.get("/about", (req, res) => {
-  //   res.send("<h1>meeee</h1>");
-  res.sendFile("./pages/about.html", { root: __dirname });
+  res.render("about", { title: "About" });
 });
 
-//redirects
-app.get("/about-us", (req, res) => {
-  res.redirect("/about");
+app.get("/blogs/create", (req, res) => {
+  res.render("create", { title: "Create a new blog" });
 });
 
 //404 page
 app.use((req, res) => {
-  res.sendFile("./pages/404.html", { root: __dirname });
+  res.status(404).render("404", { title: "404" });
 });
