@@ -3,7 +3,7 @@ const fs = require("fs");
 
 const server = http.createServer((request, response) => {
   console.log("Request made");
-  console.log(request.url, request.method);
+  console.log(request.url, request.method, request.path);
 
   // set header content type
   response.setHeader("Content-Type", "text/html");
