@@ -1,8 +1,11 @@
 const express = require("express");
 const morgan = require("morgan");
+const mongoose = require("mongoose");
 
 // express app
 const app = express();
+const dbURI =
+  "mongodb+srv://spaceman:node-tut-db@node-tut.8hflk.mongodb.net/node-tut?retryWrites=true&w=majority";
 
 //register view engine
 app.set("view engine", "ejs");
