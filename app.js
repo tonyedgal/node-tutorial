@@ -23,58 +23,24 @@ app.use(express.static("public")); //.static() method allows us to select static
 app.use(morgan("dev")); // morgan is a third party middleware that logs the request details to the console
 app.use(morgan("tiny")); // you can choose the format you want the details to be outputted
 
-// mongoose and mongo sandbox routes
-app.get("/add-blog", (req, res) => {
-  const blog = new Blog({
-    title: "new blog 2",
-    snippet: "about my new blog",
-    body: "more about my new blog",
-  });
-
-  blog
-    .save()
-    .then((result) => {
-      res.send(result);
-    })
-    .catch((err) => console.log(err));
-});
-
-app.get("/all-blogs", (req, res) => {
-  Blog.find()
-    .then((result) => {
-      res.send(result);
-    })
-    .catch((err) => console.log(err));
-});
-
-app.get("/single-blog", (req, res) => {
-  Blog.findById("61c04ecf83f96706cb2bd455")
-    .then((result) => {
-      res.send(result);
-    })
-    .catch((err) => console.log(err));
-});
-
-//choose the request you want to listen for
+// routes
 app.get("/", (req, res) => {
-  const blogs = [
-    {
-      title: "June is pretty",
-      snippet: "Lorem ipsum, dolor sit amet consectetur",
-    },
-    {
-      title: "Gabby is pretty",
-      snippet: "Lorem ipsum, dolor sit amet consectetur",
-    },
-    {
-      title: "Amaebi is pretty",
-      snippet: "Lorem ipsum, dolor sit amet consectetur",
-    },
-  ];
-  res.render("index", { title: "Home", blogs }); // pass the dynamic data as an object to the ejs file. Use blogs instead of {blogs: blogs}, since they're both the same name.
+  res.redirect("/blogs");
 });
 app.get("/about", (req, res) => {
   res.render("about", { title: "About" });
+});
+
+// blog routes
+app.get("/blogs", (req, res) => {
+  Blog.find()
+    .sort({ createdAt: -1 })
+    .then((result) => {
+      res.render("index", { title: "All Blogs", blogs: result });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 app.get("/blogs/create", (req, res) => {
