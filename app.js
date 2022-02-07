@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
@@ -7,8 +9,7 @@ const Blog = require("./models/blog");
 const app = express();
 
 // connect to mongodb
-const dbURI =
-  "mongodb+srv://spaceman:node-tut-db@node-tut.8hflk.mongodb.net/node-tuts?retryWrites=true&w=majority";
+const dbURI = process.env.MONGODB_URI;
 
 mongoose
   .connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true }) // stop the URL deprecation warning in the terminal
